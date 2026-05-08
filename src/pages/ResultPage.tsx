@@ -88,7 +88,7 @@ export default function ResultPage({ result, onBack }: Props) {
         <button
           type="button"
           onClick={onBack}
-          className="font-product select-none text-[28px] font-bold leading-none tracking-tight transition hover:opacity-80"
+          className="font-product select-none text-xl font-bold tracking-wide transition hover:opacity-80"
         >
           <span style={{ color: '#84CC16' }}>De</span>
           <span style={{ color: '#D4D4D4' }}>Clone</span>
