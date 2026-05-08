@@ -1,13 +1,20 @@
 import ModalShell from '@/components/ui/ModalShell';
 import type { VerifyResult } from '@/types';
 
-const RISK_CONFIG = {
-  high: { label: '위험', bg: 'bg-red-500',    card: 'bg-red-50 border-red-200',       text: 'text-red-500' },
-  mid:  { label: '주의', bg: 'bg-yellow-400', card: 'bg-yellow-50 border-yellow-200', text: 'text-yellow-500' },
-  safe: { label: '안전', bg: 'bg-lime-brand', card: 'bg-green-50 border-green-200',   text: 'text-lime-brand' },
-};
-
 const MESSAGES = ['앱 정보 수집 중...', '패턴 분석 중...', '유사 앱 비교 중...', '리스크 평가 중...', '결과 정리 중...'];
+
+function getRiskLevel(spam_score: number | null): 'high' | 'mid' | 'safe' {
+  if (spam_score === null) return 'safe';
+  if (spam_score >= 70) return 'high';
+  if (spam_score >= 30) return 'mid';
+  return 'safe';
+}
+
+const RISK_CONFIG = {
+  high: { label: '위험', bg: 'bg-red-500',    bar: 'bg-red-500',    card: 'bg-red-50 border-red-200',       text: 'text-red-500' },
+  mid:  { label: '주의', bg: 'bg-yellow-400', bar: 'bg-yellow-400', card: 'bg-yellow-50 border-yellow-200', text: 'text-yellow-500' },
+  safe: { label: '안전', bg: 'bg-lime-brand', bar: 'bg-lime-brand', card: 'bg-green-50 border-green-200',   text: 'text-lime-brand' },
+};
 
 type Props = {
   open: boolean;
@@ -42,10 +49,7 @@ export default function VerifyModal({ open, state, progress, result, error }: Pr
               <span>진행률</span><span>{progress}%</span>
             </div>
             <div className="h-2 w-full overflow-hidden rounded-full bg-[#F1F3F4]">
-              <div
-                className="h-full rounded-full bg-lime-brand transition-all duration-500"
-                style={{ width: `${progress}%` }}
-              />
+              <div className="h-full rounded-full bg-lime-brand transition-all duration-500" style={{ width: `${progress}%` }} />
             </div>
           </div>
           <p className="mt-5 text-xs text-[#80868b]">분석에 10~20초 정도 소요돼요</p>
@@ -53,54 +57,85 @@ export default function VerifyModal({ open, state, progress, result, error }: Pr
       )}
 
       {state === 'done' && result && (() => {
-        const cfg = RISK_CONFIG[result.risk];
+        const risk = getRiskLevel(result.spam_score);
+        const cfg = RISK_CONFIG[risk];
+        const keywords = Object.entries(result.review_stats?.trust_keywords ?? {});
+
         return (
-          <div>
+          <div className="max-h-[70vh] overflow-y-auto">
+            {/* 앱 헤더 */}
             <div className="mb-4 flex items-center gap-3">
-              <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-[#F1F3F4] text-xl font-bold text-ink">
-                {result.app_name?.charAt(0) ?? '?'}
-              </div>
+              {result.app.icon_url ? (
+                <img src={result.app.icon_url} alt={result.app.name} className="h-12 w-12 shrink-0 rounded-xl object-cover" />
+              ) : (
+                <div className="grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-[#F1F3F4] text-xl font-bold text-ink">
+                  {result.app.name.charAt(0)}
+                </div>
+              )}
               <div className="min-w-0 flex-1">
-                <h2 id="verifyTitle" className="truncate text-lg font-bold text-ink">{result.app_name}</h2>
-                <p className="truncate text-xs text-[#80868b]">{result.google_play_id}</p>
+                <h2 id="verifyTitle" className="truncate text-lg font-bold text-ink">{result.app.name}</h2>
+                <p className="truncate text-xs text-[#80868b]">{result.app.developer} · {result.app.category}</p>
               </div>
               <span className={`shrink-0 rounded-full ${cfg.bg} px-3 py-1 text-sm font-bold text-white`}>
                 {cfg.label}
               </span>
             </div>
 
-            {result.risk_score !== undefined && (
+            {/* 스팸 점수 */}
+            {result.spam_score !== null && (
               <div className="mb-4">
                 <div className="mb-1 flex justify-between text-xs font-semibold text-[#80868b]">
-                  <span>위험 점수</span>
-                  <span className={cfg.text}>{result.risk_score}점</span>
+                  <span>스팸 점수</span>
+                  <span className={cfg.text}>{result.spam_score.toFixed(1)}점</span>
                 </div>
                 <div className="h-2 w-full overflow-hidden rounded-full bg-[#F1F3F4]">
-                  <div className={`h-full rounded-full ${cfg.bg} transition-all duration-700`} style={{ width: `${result.risk_score}%` }} />
+                  <div className={`h-full rounded-full ${cfg.bar} transition-all duration-700`} style={{ width: `${Math.min(result.spam_score, 100)}%` }} />
                 </div>
               </div>
             )}
 
-            <div className={`mb-4 rounded-2xl border p-4 ${cfg.card}`}>
-              <p className="text-sm leading-relaxed text-ink">
-                {result.summary ?? (result.risk === 'high' ? '클론 앱으로 의심됩니다. 설치를 권장하지 않아요.' : result.risk === 'mid' ? '일부 위험 요소가 감지되었어요. 주의가 필요해요.' : '정상 앱으로 확인되었어요.')}
-              </p>
-            </div>
-
-            {result.clone_of && (
-              <div className="mb-4 rounded-xl bg-[#F1F3F4] px-4 py-3 text-sm text-ink">
-                <span className="font-semibold">원본 앱: </span>{result.clone_of}
+            {/* 리뷰 통계 */}
+            {result.review_stats && (
+              <div className={`mb-4 rounded-2xl border p-4 ${cfg.card}`}>
+                <div className="mb-2 flex gap-4 text-sm">
+                  <span className="text-ink">
+                    부정 리뷰 비율 <strong>{(result.review_stats.negative_ratio * 100).toFixed(0)}%</strong>
+                  </span>
+                  <span className="text-ink">
+                    양극화 지수 <strong>{result.review_stats.polarization_index.toFixed(2)}</strong>
+                  </span>
+                </div>
+                {keywords.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5">
+                    {keywords.map(([kw, cnt]) => (
+                      <span key={kw} className="rounded-full bg-white/80 px-2.5 py-0.5 text-xs font-medium text-ink">
+                        {kw} {cnt}건
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
 
-            {result.reasons && result.reasons.length > 0 && (
-              <ul className="mb-4 space-y-1.5">
-                {result.reasons.map((r, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-[#3c4043]">
-                    <span className="mt-0.5 shrink-0 text-[#80868b]">•</span>{r}
-                  </li>
-                ))}
-              </ul>
+            {/* 부정 리뷰 */}
+            {result.reviews?.negative?.length > 0 && (
+              <div className="mb-4">
+                <p className="mb-2 text-xs font-bold uppercase tracking-wider text-[#80868b]">부정 리뷰</p>
+                <ul className="space-y-2">
+                  {result.reviews.negative.slice(0, 2).map((r, i) => (
+                    <li key={i} className="rounded-xl bg-[#F1F3F4] px-3.5 py-2.5 text-sm text-ink">
+                      {r.text}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* 구글 플레이 평점 */}
+            {result.ratings?.google_play && (
+              <p className="mb-4 text-xs text-[#80868b]">
+                Google Play 평점 <strong className="text-ink">{result.ratings.google_play}</strong>
+              </p>
             )}
 
             <button type="button" onClick={handleClose} className="w-full rounded-full bg-lime-brand py-3 text-sm font-bold text-ink shadow-[0_4px_12px_rgba(132,204,22,0.35)] transition hover:-translate-y-px">

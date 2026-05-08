@@ -19,6 +19,10 @@ export default defineConfig({
         target: 'https://khuthonbackend-production.up.railway.app',
         changeOrigin: true,
       },
+      '/health': {
+        target: 'https://khuthonbackend-production.up.railway.app',
+        changeOrigin: true,
+      },
     },
   },
 })

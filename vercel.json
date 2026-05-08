@@ -1,5 +1,7 @@
 {
   "rewrites": [
+    { "source": "/api/:path*", "destination": "https://khuthonbackend-production.up.railway.app/api/:path*" },
+    { "source": "/health", "destination": "https://khuthonbackend-production.up.railway.app/health" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
