@@ -9,14 +9,15 @@ import './App.css';
 export default function App() {
   const { state, progress, result, error, run } = useVerify();
 
-  if (state === 'done' && result) {
-    return <ResultPage result={result} onBack={() => window.location.reload()} />;
-  }
   useEffect(() => {
     checkHealth().then((ok) => {
       console.log(`[헬스체크] 백엔드 상태: ${ok ? '✅ 정상' : '❌ 연결 실패'}`);
     });
   }, []);
+
+  if (state === 'done' && result) {
+    return <ResultPage result={result} onBack={() => window.location.reload()} />;
+  }
 
   return (
     <>
