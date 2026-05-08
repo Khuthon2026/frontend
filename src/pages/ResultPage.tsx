@@ -67,7 +67,7 @@ export default function ResultPage({ result, onBack }: Props) {
 
   const indexData: IndexAnalysisData = {
     score: result.spam_score,
-    outOf: 10,
+    outOf: 5,
     warning: toRisk(result.spam_score),
     bars: [
       { id: 'neg', label: '부정 리뷰 비율', pct: negPct, color: '#ec4f8d', trackGradient: 'linear-gradient(90deg,#f06aa1,#ec4f8d)' },
