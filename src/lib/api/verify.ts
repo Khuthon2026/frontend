@@ -19,17 +19,20 @@ export const startVerify = async (google_play_id: string): Promise<{ job_id: str
     body: JSON.stringify({ google_play_id }),
   });
   if (!res.ok) throw new Error('분석 요청 실패');
-  return res.json();
+  const json = await res.json();
+  return json.data ?? json;
 };
 
 export const getVerifyStatus = async (job_id: string): Promise<{ status: string; progress: number }> => {
   const res = await fetch(`/api/verify/${job_id}/status`);
   if (!res.ok) throw new Error('상태 조회 실패');
-  return res.json();
+  const json = await res.json();
+  return json.data ?? json;
 };
 
 export const getVerifyResult = async (job_id: string): Promise<VerifyResult> => {
   const res = await fetch(`/api/verify/${job_id}`);
   if (!res.ok) throw new Error('결과 조회 실패');
-  return res.json();
+  const json = await res.json();
+  return json.data ?? json;
 };

@@ -9,27 +9,22 @@ import UrlList from '../components/features/UrlList';
 import Top3 from '../components/features/Top3';
 import UrlModal from '../components/features/UrlModal';
 import ReportModal from '../components/features/ReportModal';
-import VerifyModal from '../components/features/VerifyModal';
 import { useToast } from '../hooks/useToast';
-import { useVerify } from '../hooks/useVerify';
 import type { UrlEntry, SearchResult } from '../types';
 
 interface Props {
-  onSearch?: (appName: string) => void;
+  onPick: (googlePlayId: string) => void;
 }
 
-export default function HomePage({ onSearch }: Props) {
+export default function HomePage({ onPick }: Props) {
   const [query, setQuery] = useState('');
   const [urls, setUrls] = useState<UrlEntry[]>([]);
   const [urlOpen, setUrlOpen] = useState(false);
   const [reportOpen, setReportOpen] = useState(false);
   const { message, show } = useToast();
-  const { state, progress, result, error, run } = useVerify();
-
-  const verifyOpen = state === 'loading' || state === 'done' || state === 'failed';
 
   const handlePick = (item: SearchResult) => {
-    run(item.google_play_id);
+    onPick(item.google_play_id);
   };
 
   const handleAddUrl = (url: string) => {
@@ -81,13 +76,6 @@ export default function HomePage({ onSearch }: Props) {
         onClose={() => setReportOpen(false)}
         onSubmit={handleReport}
         initialName={query.trim()}
-      />
-      <VerifyModal
-        open={verifyOpen}
-        state={state === 'idle' ? 'loading' : state}
-        progress={progress}
-        result={result}
-        error={error}
       />
       <Toast message={message} />
     </div>

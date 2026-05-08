@@ -10,7 +10,7 @@ export function useVerify() {
   const [result, setResult] = useState<VerifyResult | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const run = async (google_play_id: string) => {
+  const run = async (google_play_id: string): Promise<VerifyResult | null> => {
     setState('loading');
     setProgress(0);
     setResult(null);
@@ -30,9 +30,11 @@ export function useVerify() {
       const data = await getVerifyResult(job_id);
       setResult(data);
       setState('done');
+      return data;
     } catch (e) {
       setError(e instanceof Error ? e.message : '오류가 발생했어요');
       setState('failed');
+      return null;
     }
   };
 

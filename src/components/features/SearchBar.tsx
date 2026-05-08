@@ -81,7 +81,7 @@ export default function SearchBar({ query, setQuery, onUrlClick, onPick }: Props
     <div ref={wrapRef} className="relative w-full max-w-[720px]">
       <form
         className="flex items-center gap-3.5 rounded-full bg-white/[0.97] py-3.5 pl-6 pr-3 shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_20px_60px_rgba(0,0,0,0.35),0_0_0_1px_rgba(255,255,255,0.08)] transition focus-within:shadow-[inset_0_1px_0_rgba(255,255,255,0.4),0_24px_70px_rgba(0,0,0,0.45),0_0_0_3px_rgba(132,204,22,0.45)]"
-        onSubmit={(e) => { e.preventDefault(); if (query.trim()) onSearch?.(query.trim()); }}
+        onSubmit={(e) => e.preventDefault()}
       >
         {searching ? (
           <svg className="h-[22px] w-[22px] flex-shrink-0 animate-spin text-[#5f6368]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round">
