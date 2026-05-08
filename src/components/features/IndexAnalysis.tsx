@@ -23,7 +23,7 @@ export default function IndexAnalysis({ data, playKey, onCompare }: IndexAnalysi
           <button
             type="button"
             onClick={onCompare}
-            className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.06] px-3.5 py-1.5 text-[12px] font-semibold text-white/70 transition hover:bg-white/10 hover:text-white/90"
+            className="inline-flex items-center gap-1.5 rounded-full bg-lime-brand px-[18px] py-2 text-[12px] font-bold text-ink shadow-[0_6px_16px_rgba(132,204,22,0.35)] transition hover:-translate-y-px hover:shadow-[0_10px_22px_rgba(132,204,22,0.45)]"
           >
             <svg width={13} height={13} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round">
               <rect x={2} y={3} width={9} height={18} rx={1.5} />
