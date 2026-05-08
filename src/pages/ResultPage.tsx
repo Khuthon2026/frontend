@@ -63,10 +63,10 @@ export default function ResultPage({ result, adUrl, onBack }: Props) {
     icon_url: result.app.icon_url,
   };
 
-  const negPct = Math.round(result.signal_scores.avg_rating_score);
-  const polPct = Math.round(result.signal_scores.polarization_score);
-  const ratingRiskPct = Math.round(result.signal_scores.negative_keyword_score);
-  const patternPct = Math.round(result.signal_scores.review_ratio_score);
+  const negPct = Math.round(100 - result.signal_scores.negative_keyword_score);
+  const polPct = Math.round(100 - result.signal_scores.polarization_score);
+  const ratingRiskPct = Math.round(100 - result.signal_scores.avg_rating_score);
+  const patternPct = Math.min(Math.round(result.developer_stats.pattern_score * 20), 100);
 
   const indexData: IndexAnalysisData = {
     score: result.spam_score,
