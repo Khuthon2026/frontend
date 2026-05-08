@@ -25,16 +25,19 @@ export const TOP3 = [
   {
     rank: 1,
     title: '라스트 Z: 서바이벌 슈터',
+    google_play_id: 'com.readygo.barrel.gp',
     icon: 'https://play-lh.googleusercontent.com/DVXTZpTR02_xoN1kOqnhOOuW9p1LiUHiu_Vw0xjzdu1SswhIbLp3OdV4x6skiarMGcE',
   },
   {
     rank: 2,
     title: '버섯커 키우기-3000뽑기 증정',
+    google_play_id: 'com.mxdzzkr.google',
     icon: 'https://play-lh.googleusercontent.com/olgO91YKKQE8d46Mt97SCkZM-SYJBvxrCeP_LRJeewclKhP1K8npUYnUAvkIJ8sEzz0c67Z778p1yV7INLsiQck',
   },
   {
     rank: 3,
     title: '카피바라 Go!',
+    google_play_id: 'com.habby.capybara',
     icon: 'https://play-lh.googleusercontent.com/UK3PEAFTzKfNyFeXRX_p-9DR34u137jyGnW-Nhy6KlDWoMRHywGQA2uvYPwZMLHoc9Pc',
   },
 ];

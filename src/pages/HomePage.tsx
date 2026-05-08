@@ -65,7 +65,7 @@ export default function HomePage({ onPick }: Props) {
         <UrlList items={urls} onRemove={(id) => setUrls((u) => u.filter((x) => x.id !== id))} />
 
         <p className="mt-9 text-center text-sm font-medium tracking-wide text-white/70">자주 속는 앱 Top 3</p>
-        <Top3 onPick={(name) => setQuery(name)} />
+        <Top3 onPick={onPick} />
       </main>
 
       <Footer />
