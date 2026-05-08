@@ -20,21 +20,23 @@ function toRisk(spam: number) {
   return '광고에 과장이 없는 앱이에요';
 }
 
-function buildKeywords(trust: Record<string, number>): KeywordEntry[] {
-  const entries = Object.entries(trust).sort((a, b) => b[1] - a[1]);
-  const maxCount = entries[0]?.[1] ?? 1;
+function buildKeywords(trust: { positive: Record<string, number>; negative: Record<string, number> }): KeywordEntry[] {
+  const pos = Object.entries(trust.positive ?? {}).map(([text, count]) => ({ text, count, sentiment: 'positive' as const }));
+  const neg = Object.entries(trust.negative ?? {}).map(([text, count]) => ({ text, count, sentiment: 'negative' as const }));
+  const all = [...pos, ...neg].sort((a, b) => b.count - a.count);
+  const maxCount = all[0]?.count ?? 1;
   const positions = [
-    [22, 18], [58, 14], [76, 30], [10, 38], [42, 32],
-    [65, 52], [28, 58], [50, 68], [15, 72], [80, 65],
-    [38, 82], [68, 78], [5, 55], [90, 45],
+    [35, 22], [62, 18], [72, 34], [22, 36], [48, 28],
+    [65, 52], [28, 56], [50, 66], [24, 70], [74, 62],
+    [42, 78], [65, 74], [22, 50], [76, 44],
   ];
-  return entries.map(([text, count], i) => ({
+  return all.map(({ text, count, sentiment }, i) => ({
     text,
-    sentiment: 'negative' as const,
+    sentiment,
     size: Math.round(18 + (count / maxCount) * 32),
     x: positions[i % positions.length][0],
     y: positions[i % positions.length][1],
-    dim: i >= 5,
+    dim: i >= 7,
   }));
 }
 

@@ -84,7 +84,10 @@ export interface VerifyResult {
   review_stats: {
     negative_ratio: number;
     polarization_index: number;
-    trust_keywords: Record<string, number>;
+    trust_keywords: {
+      positive: Record<string, number>;
+      negative: Record<string, number>;
+    };
   };
   reviews: {
     negative: { score: number; text: string; date: string }[];
