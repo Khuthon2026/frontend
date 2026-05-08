@@ -25,25 +25,25 @@
   --line-height-normal: 1.5;
   --line-height-loose:  1.75;
 
-  /* 배경 */
-  --background-color:           #FFFFFF;
-  --background-color-secondary: #E6F7F8;
+/* 배경 */
+--background-color:           #FFFFFF;
+--background-color-secondary: #152F59;
 
-  /* 텍스트 */
-  --text-primary:   #1F3233;
-  --text-secondary: #285F63;
+/* 텍스트 */
+--text-primary:   #152F59;
+--text-secondary: #B0B0B0;
 
-  /* 브랜드 */
-  --color-primary:      #1E8E96;
-  --color-primary-dark: #285F63;
-  --color-accent:       #00BCC9;
+/* 브랜드 */
+--color-primary:      #1B16CC;
+--color-primary-dark: #152F59;
+--color-accent:       #84CC16;
 
-  /* 테두리 */
-  --border-color: #C8EAEC;
+/* 테두리 */
+--border-color: #B0B0B0;
 
-  /* 버튼 */
-  --btn-primary-bg:   #1E8E96;
-  --btn-primary-text: #FFFFFF;
+/* 버튼 */
+--btn-primary-bg:   #1B16CC;
+--btn-primary-text: #FFFFFF;
 
   /* 간격 (Spacing Scale — 4px 기반) */
   --spacing-1:  4px;   /* 아이콘 내부 여백, 태그 패딩 */
