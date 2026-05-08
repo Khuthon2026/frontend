@@ -1,5 +1,15 @@
 import type { SearchResult, VerifyResult } from '@/types';
 
+export const checkHealth = async (): Promise<boolean> => {
+  try {
+    const res = await fetch('/health');
+    const json = await res.json();
+    return json.success === true && json.data?.status === 'ok';
+  } catch {
+    return false;
+  }
+};
+
 export const searchApps = async (q: string): Promise<SearchResult[]> => {
   const res = await fetch(`/api/search?q=${encodeURIComponent(q)}`);
   if (!res.ok) throw new Error('검색 실패');

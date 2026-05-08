@@ -88,5 +88,4 @@ export interface VerifyResult {
     category_overlap: number;
     pattern_score: number;
   };
-  developer_apps: string[];
 }
