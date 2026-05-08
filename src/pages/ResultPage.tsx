@@ -37,11 +37,11 @@ function buildKeywords(trust: Record<string, number>): KeywordEntry[] {
 }
 
 function buildReviews(result: VerifyResult): ReviewEntry[] {
-  const keywords = Object.keys(result.review_stats.trust_keywords);
-  const neg: ReviewEntry[] = result.reviews.negative.slice(0, 3).map((r) => {
-    const kw = keywords.find((k) => r.text.includes(k)) ?? '부정 리뷰';
-    return { keyword: kw, sentiment: 'negative', text: r.text };
-  });
+  const neg: ReviewEntry[] = result.reviews.negative.slice(0, 3).map((r) => ({
+    keyword: '부정 리뷰',
+    sentiment: 'negative',
+    text: r.text,
+  }));
   const pos: ReviewEntry[] = result.reviews.positive.slice(0, 2).map((r) => ({
     keyword: '긍정 리뷰',
     sentiment: 'positive',
