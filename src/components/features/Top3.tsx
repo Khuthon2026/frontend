@@ -12,13 +12,16 @@ export default function Top3({ onPick }: Props) {
       {TOP3.map((it, i) => (
         <button
           key={it.rank}
-          onClick={() => onPick(it.name)}
+          onClick={() => onPick(it.title)}
           className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.06] py-2 pl-2 pr-3.5 text-[13px] font-medium text-white transition hover:-translate-y-px hover:border-lime-brand/50 hover:bg-white/[0.12]"
         >
-          <span className={`font-product grid h-[22px] w-[22px] place-items-center rounded-full text-xs font-extrabold ${rankColors[i]}`}>
-            {it.rank}
-          </span>
-          {it.name}
+          <img
+            src={it.icon}
+            alt={it.title}
+            className="h-6 w-6 rounded-full border border-white/10 object-cover"
+            loading="lazy"
+          />
+          {it.title}
         </button>
       ))}
     </div>

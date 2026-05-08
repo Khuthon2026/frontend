@@ -22,9 +22,21 @@ export const APPS: AppItem[] = [
 ];
 
 export const TOP3 = [
-  { rank: 1, name: '무료 VPN Pro' },
-  { rank: 2, name: '코인 자동수익봇' },
-  { rank: 3, name: '다이어트 30일' },
+  {
+    rank: 1,
+    title: '라스트 Z: 서바이벌 슈터',
+    icon: 'https://play-lh.googleusercontent.com/DVXTZpTR02_xoN1kOqnhOOuW9p1LiUHiu_Vw0xjzdu1SswhIbLp3OdV4x6skiarMGcE',
+  },
+  {
+    rank: 2,
+    title: '버섯커 키우기-3000뽑기 증정',
+    icon: 'https://play-lh.googleusercontent.com/olgO91YKKQE8d46Mt97SCkZM-SYJBvxrCeP_LRJeewclKhP1K8npUYnUAvkIJ8sEzz0c67Z778p1yV7INLsiQck',
+  },
+  {
+    rank: 3,
+    title: '카피바라 Go!',
+    icon: 'https://play-lh.googleusercontent.com/UK3PEAFTzKfNyFeXRX_p-9DR34u137jyGnW-Nhy6KlDWoMRHywGQA2uvYPwZMLHoc9Pc',
+  },
 ];
 
 export const ICON_COLORS = ['#1B16CC', '#84CC16', '#152F59', '#B0B0B0', '#0EA5E9', '#F97316', '#A855F7'];
