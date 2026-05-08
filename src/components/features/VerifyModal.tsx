@@ -28,7 +28,12 @@ export default function VerifyModal({ open, state, progress, result, error }: Pr
   const msgIdx = Math.min(Math.floor(progress / 20), MESSAGES.length - 1);
   const risk = result ? getRiskLevel(result.spam_score) : 'safe';
   const cfg = RISK_CONFIG[risk];
-  const keywords = result ? Object.entries(result.review_stats?.trust_keywords ?? {}) : [];
+  const keywords = result
+    ? Object.entries({
+        ...(result.review_stats?.trust_keywords?.positive ?? {}),
+        ...(result.review_stats?.trust_keywords?.negative ?? {}),
+      })
+    : [];
 
   const handleClose = () => {
     if (state === 'loading') return;
