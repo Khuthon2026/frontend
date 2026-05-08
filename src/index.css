@@ -92,10 +92,6 @@
   background: var(--color-primary-dark);
 }
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 html,
 body,
 #root {
