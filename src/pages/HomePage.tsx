@@ -75,7 +75,7 @@ export default function HomePage({ onPick }: Props) {
         open={reportOpen}
         onClose={() => setReportOpen(false)}
         onSubmit={handleReport}
-        initialName={query.trim()}
+        initialName=""
       />
       <Toast message={message} />
     </div>
