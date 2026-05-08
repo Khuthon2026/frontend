@@ -14,6 +14,7 @@ export default function UrlModal({ open, onClose, onSubmit }: Props) {
 
   useEffect(() => {
     if (open) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setUrl('');
       setError(null);
       setTimeout(() => inputRef.current?.focus(), 50);
