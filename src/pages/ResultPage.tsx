@@ -4,9 +4,6 @@ import Footer from '@/components/ui/Footer';
 import AppCard from '@/components/features/AppCard';
 import IndexAnalysis from '@/components/features/IndexAnalysis';
 import Keywords from '@/components/features/Keywords';
-import ReportModal from '@/components/features/ReportModal';
-import Toast from '@/components/ui/Toast';
-import { useToast } from '@/hooks/useToast';
 import type { VerifyResult, AppMeta, IndexAnalysisData, KeywordEntry, ReviewEntry } from '@/types';
 
 interface Props {
@@ -15,9 +12,10 @@ interface Props {
 }
 
 function toRisk(spam: number) {
-  if (spam >= 7) return '고위험 앱으로 분류되었어요. 주의하세요.';
-  if (spam >= 4) return '일부 위험 요소가 발견되었어요.';
-  return '비교적 안전한 앱으로 확인되었어요.';
+  if (spam >= 4) return '광고와 실제 게임이 완전히 달라요';
+  if (spam >= 3) return '광고와 다소 차이가 있을 수 있어요';
+  if (spam >= 1.5) return '광고와 실제가 대체로 일치해요';
+  return '광고에 과장이 없는 앱이에요';
 }
 
 function buildKeywords(trust: Record<string, number>): KeywordEntry[] {
@@ -54,8 +52,6 @@ function buildReviews(result: VerifyResult): ReviewEntry[] {
 
 export default function ResultPage({ result, onBack }: Props) {
   const [playKey] = useState(0);
-  const [reportOpen, setReportOpen] = useState(false);
-  const { message, show } = useToast();
 
   const app: AppMeta = {
     initial: result.app.name.charAt(0),
@@ -63,10 +59,10 @@ export default function ResultPage({ result, onBack }: Props) {
     categories: [result.app.category, result.app.developer].filter(Boolean),
   };
 
-  const negPct = Math.round(result.review_stats.negative_ratio * 100);
-  const polPct = Math.round(result.review_stats.polarization_index * 100);
-  const ratingRiskPct = Math.round((5 - Math.min(result.ratings.google_play, 5)) / 5 * 100);
-  const patternPct = Math.min(Math.round(result.developer_stats.pattern_score), 100);
+  const negPct = Math.round(result.signal_scores.avg_rating_score);
+  const polPct = Math.round(result.signal_scores.polarization_score);
+  const ratingRiskPct = Math.round(result.signal_scores.negative_keyword_score);
+  const patternPct = Math.round(result.signal_scores.review_ratio_score);
 
   const indexData: IndexAnalysisData = {
     score: result.spam_score,
@@ -87,45 +83,24 @@ export default function ResultPage({ result, onBack }: Props) {
     <div className="relative flex min-h-screen flex-col">
       <Background />
 
-      <header className="relative z-[2] flex items-center justify-between px-8 py-5">
+      <header className="relative z-2 flex items-center justify-between px-8 py-5">
         <button
           type="button"
           onClick={onBack}
-          className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-sm font-medium text-white/80 backdrop-blur-md transition hover:bg-white/10"
+          className="font-product select-none text-[28px] font-bold leading-none tracking-tight transition hover:opacity-80"
         >
-          <svg width={16} height={16} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
-            <path d="M19 12H5M12 5l-7 7 7 7" />
-          </svg>
-          홈으로
-        </button>
-        <button
-          type="button"
-          onClick={() => setReportOpen(true)}
-          className="inline-flex items-center gap-2 rounded-full bg-[#B42318]/90 px-4 py-2 text-sm font-semibold text-white backdrop-blur-md transition hover:bg-[#B42318]"
-        >
-          <svg width={14} height={14} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" strokeLinejoin="round">
-            <path d="M12 9v4M12 17h.01" />
-            <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
-          </svg>
-          신고하기
+          <span style={{ color: '#84CC16' }}>De</span>
+          <span style={{ color: '#D4D4D4' }}>Clone</span>
         </button>
       </header>
 
-      <main className="relative z-[2] mx-auto w-full max-w-[900px] flex-1 px-6 pb-20 pt-4">
+      <main className="relative z-2 mx-auto w-full max-w-225 flex-1 px-6 pb-20 pt-4">
         <AppCard app={app} />
         <IndexAnalysis data={indexData} playKey={playKey} />
         {keywords.length > 0 && <Keywords keywords={keywords} reviews={reviews} />}
       </main>
 
       <Footer />
-
-      <ReportModal
-        open={reportOpen}
-        onClose={() => setReportOpen(false)}
-        onSubmit={() => show('신고가 접수되었어요')}
-        initialName={result.app.name}
-      />
-      <Toast message={message} />
     </div>
   );
 }

@@ -66,6 +66,12 @@ export interface VerifyResult {
   mode: string;
   spam_score: number;
   ad_score: number | null;
+  signal_scores: {
+    avg_rating_score: number;
+    polarization_score: number;
+    negative_keyword_score: number;
+    review_ratio_score: number;
+  };
   app: {
     name: string;
     developer: string;

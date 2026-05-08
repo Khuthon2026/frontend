@@ -1,13 +1,38 @@
 interface WarnPillProps {
   children: React.ReactNode;
+  score: number;
 }
 
-export default function WarnPill({ children }: WarnPillProps) {
+function getPillStyle(score: number): { background: string; iconColor: string } {
+  if (score >= 4)
+    return {
+      background: 'linear-gradient(180deg, #ef5b5b 0%, #d33d3d 100%)',
+      iconColor: 'currentColor',
+    };
+  if (score >= 3)
+    return {
+      background: 'linear-gradient(180deg, #f97316 0%, #ea6a00 100%)',
+      iconColor: 'currentColor',
+    };
+  if (score >= 1.5)
+    return {
+      background: 'linear-gradient(180deg, #eab308 0%, #ca9a00 100%)',
+      iconColor: 'currentColor',
+    };
+  return {
+    background: 'linear-gradient(180deg, #84cc16 0%, #65a30d 100%)',
+    iconColor: 'currentColor',
+  };
+}
+
+export default function WarnPill({ children, score }: WarnPillProps) {
+  const { background } = getPillStyle(score);
+
   return (
     <span
       className="inline-flex items-center gap-2 whitespace-nowrap rounded-[10px] px-3.5 py-1.5 text-[13px] font-semibold text-white"
       style={{
-        background: 'linear-gradient(180deg, #ef5b5b 0%, #d33d3d 100%)',
+        background,
         boxShadow: '0 2px 0 rgba(0,0,0,0.15), inset 0 1px 0 rgba(255,255,255,0.18)',
       }}
     >

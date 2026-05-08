@@ -15,7 +15,7 @@ export default function IndexAnalysis({ data, playKey }: IndexAnalysisProps) {
         <div className="text-[18px] font-bold tracking-[-0.01em] text-[#e8eef2]">
           지수분석
         </div>
-        <WarnPill>{data.warning}</WarnPill>
+        <WarnPill score={data.score}>{data.warning}</WarnPill>
       </div>
 
       <div className="grid grid-cols-[340px_1fr] items-center gap-7 px-1 pb-1 pt-2">
