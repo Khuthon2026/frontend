@@ -43,7 +43,7 @@ export default function HomePage({ onPick }: Props) {
       <main className="relative z-[2] flex flex-1 flex-col items-center justify-center px-6 pb-20 pt-10">
         <div className="mb-9 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-[13px] text-white/85 backdrop-blur-md">
           <span className="h-[7px] w-[7px] animate-pulse-ring rounded-full bg-lime-brand" />
-          <span>오늘 검증된 앱 1,247개</span>
+          <span>오늘 검증된 앱 7개</span>
         </div>
 
         <Logo />

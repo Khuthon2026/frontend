@@ -5,11 +5,12 @@ import type { VerifyResult } from '@/types';
 const SESSION_KEY = 'verify_result';
 
 type State = 'idle' | 'loading' | 'done' | 'failed';
+type Saved = { result: VerifyResult; adUrl: string | null };
 
-function loadSaved(): VerifyResult | null {
+function loadSaved(): Saved | null {
   try {
     const raw = sessionStorage.getItem(SESSION_KEY);
-    return raw ? (JSON.parse(raw) as VerifyResult) : null;
+    return raw ? (JSON.parse(raw) as Saved) : null;
   } catch {
     return null;
   }
@@ -19,9 +20,9 @@ export function useVerify() {
   const saved = loadSaved();
   const [state, setState] = useState<State>(saved ? 'done' : 'idle');
   const [progress, setProgress] = useState(0);
-  const [result, setResult] = useState<VerifyResult | null>(saved);
+  const [result, setResult] = useState<VerifyResult | null>(saved?.result ?? null);
   const [error, setError] = useState<string | null>(null);
-  const [adUrl, setAdUrl] = useState<string | null>(null);
+  const [adUrl, setAdUrl] = useState<string | null>(saved?.adUrl ?? null);
 
   const run = async (google_play_id: string, adUrlParam?: string): Promise<VerifyResult | null> => {
     setState('loading');
@@ -42,7 +43,7 @@ export function useVerify() {
       }
 
       const data = await getVerifyResult(job_id);
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify(data));
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ result: data, adUrl: adUrlParam ?? null }));
       setResult(data);
       setState('done');
       return data;
