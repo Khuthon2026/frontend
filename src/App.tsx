@@ -16,7 +16,7 @@ export default function App() {
   }, []);
 
   if (state === 'done' && result) {
-    return <ResultPage result={result} adUrl={adUrl} onBack={() => window.location.reload()} />;
+    return <ResultPage result={result} adUrl={adUrl} onBack={() => { sessionStorage.removeItem('verify_result'); window.location.reload(); }} />;
   }
 
   return (
