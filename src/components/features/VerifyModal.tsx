@@ -5,8 +5,8 @@ const MESSAGES = ['앱 정보 수집 중...', '패턴 분석 중...', '유사 �
 
 function getRiskLevel(spam_score: number | null): 'high' | 'mid' | 'safe' {
   if (spam_score === null) return 'safe';
-  if (spam_score >= 70) return 'high';
-  if (spam_score >= 30) return 'mid';
+  if (spam_score >= 3.1) return 'high';
+  if (spam_score >= 1.6) return 'mid';
   return 'safe';
 }
 
@@ -89,7 +89,7 @@ export default function VerifyModal({ open, state, progress, result, error }: Pr
                   <span className={cfg.text}>{result.spam_score.toFixed(1)}점</span>
                 </div>
                 <div className="h-2 w-full overflow-hidden rounded-full bg-[#F1F3F4]">
-                  <div className={`h-full rounded-full ${cfg.bar} transition-all duration-700`} style={{ width: `${Math.min(result.spam_score, 100)}%` }} />
+                  <div className={`h-full rounded-full ${cfg.bar} transition-all duration-700`} style={{ width: `${(result.spam_score / 5) * 100}%` }} />
                 </div>
               </div>
             )}
