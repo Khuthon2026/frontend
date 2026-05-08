@@ -18,6 +18,7 @@ export interface AppMeta {
   initial: string;
   name: string;
   categories: string[];
+  icon_url?: string;
 }
 
 export interface BarMetric {

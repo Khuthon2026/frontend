@@ -57,6 +57,7 @@ export default function ResultPage({ result, onBack }: Props) {
     initial: result.app.name.charAt(0),
     name: result.app.name,
     categories: [result.app.category, result.app.developer].filter(Boolean),
+    icon_url: result.app.icon_url,
   };
 
   const negPct = Math.round(result.signal_scores.avg_rating_score);
