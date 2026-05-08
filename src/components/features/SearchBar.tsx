@@ -129,12 +129,16 @@ export default function SearchBar({ query, setQuery, onUrlClick, onPick }: Props
               className={`flex cursor-pointer items-center gap-3.5 rounded-2xl px-3.5 py-2.5 transition ${i === activeIdx ? 'bg-[#F1F3F4]' : 'hover:bg-[#F1F3F4]'}`}
               onMouseDown={() => pick(a)}
             >
-              <div
-                className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-[10px] text-lg font-bold text-white"
-                style={{ background: colorFor(a.name) }}
-              >
-                {a.name.charAt(0)}
-              </div>
+              {a.icon_url ? (
+                <img src={a.icon_url} alt={a.name} className="h-10 w-10 flex-shrink-0 rounded-[10px] object-cover" />
+              ) : (
+                <div
+                  className="grid h-10 w-10 flex-shrink-0 place-items-center rounded-[10px] text-lg font-bold text-white"
+                  style={{ background: colorFor(a.name) }}
+                >
+                  {a.name.charAt(0)}
+                </div>
+              )}
               <div className="min-w-0 flex-1">
                 <div
                   className="truncate text-[15px] font-semibold text-ink"
