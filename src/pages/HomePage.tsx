@@ -9,8 +9,10 @@ import UrlList from '../components/features/UrlList';
 import Top3 from '../components/features/Top3';
 import UrlModal from '../components/features/UrlModal';
 import ReportModal from '../components/features/ReportModal';
+import VerifyModal from '../components/features/VerifyModal';
 import { useToast } from '../hooks/useToast';
-import type { UrlEntry } from '../types';
+import { useVerify } from '../hooks/useVerify';
+import type { UrlEntry, SearchResult } from '../types';
 
 export default function HomePage() {
   const [query, setQuery] = useState('');
@@ -18,6 +20,13 @@ export default function HomePage() {
   const [urlOpen, setUrlOpen] = useState(false);
   const [reportOpen, setReportOpen] = useState(false);
   const { message, show } = useToast();
+  const { state, progress, result, error, run } = useVerify();
+
+  const verifyOpen = state === 'loading' || state === 'done' || state === 'failed';
+
+  const handlePick = (item: SearchResult) => {
+    run(item.google_play_id);
+  };
 
   const handleAddUrl = (url: string) => {
     let name = url;
@@ -42,12 +51,17 @@ export default function HomePage() {
       <main className="relative z-[2] flex flex-1 flex-col items-center justify-center px-6 pb-20 pt-10">
         <div className="mb-9 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-[13px] text-white/85 backdrop-blur-md">
           <span className="h-[7px] w-[7px] animate-pulse-ring rounded-full bg-lime-brand" />
-          <span>오늘 검증된 앱 7개</span>
+          <span>오늘 검증된 앱 1,247개</span>
         </div>
 
         <Logo />
 
-        <SearchBar query={query} setQuery={setQuery} onUrlClick={() => setUrlOpen(true)} />
+        <SearchBar
+          query={query}
+          setQuery={setQuery}
+          onUrlClick={() => setUrlOpen(true)}
+          onPick={handlePick}
+        />
 
         <UrlList items={urls} onRemove={(id) => setUrls((u) => u.filter((x) => x.id !== id))} />
 
@@ -63,6 +77,13 @@ export default function HomePage() {
         onClose={() => setReportOpen(false)}
         onSubmit={handleReport}
         initialName={query.trim()}
+      />
+      <VerifyModal
+        open={verifyOpen}
+        state={state === 'idle' ? 'loading' : state}
+        progress={progress}
+        result={result}
+        error={error}
       />
       <Toast message={message} />
     </div>
